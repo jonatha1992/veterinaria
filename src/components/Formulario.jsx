@@ -1,19 +1,35 @@
 import React, { useState } from "react";
+import Error from "./Error";
+import { usePacientes } from "../context/Context";
+
+const generarId = () => {
+    const random = Math.random().toString(36).substr(2);
+    const fecha = Date.now().toString(36);
+    return random + fecha;
+};
 
 const Formulario = () => {
     const [error, setError] = useState(false);
-    const [paciente, setPaciente] = useState({
-        id: "",
-        nombre: "",
-        propietario: "",
-        email: "",
-        fecha: "",
-        sintomas: "",
-    });
-
+    const { pacientes, setPacientes, paciente, setPaciente } = usePacientes();
+    const { id, nombre, propietario, email, fecha, sintomas } = paciente;
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(paciente);
+
+        if ([paciente.nombre, paciente.propietario, paciente.email, paciente.sintomas].includes("")) {
+            setError(true);
+            return;
+        }
+        paciente.id = generarId();
+        setPacientes([...pacientes, paciente]);
+        setPaciente({
+            id: "",
+            nombre: "",
+            propietario: "",
+            email: "",
+            fecha: "",
+            sintomas: "",
+        });
+        setError(false);
     };
 
     return (
@@ -27,6 +43,11 @@ const Formulario = () => {
             </p>
 
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg my-5 py-10 px-12  ">
+                {error && (
+                    <Error>
+                        <p>Todos los campos son obligatorios</p>
+                    </Error>
+                )}
                 <div className="mb-2">
                     <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold text-sm">
                         Nombre Mascota
@@ -36,7 +57,7 @@ const Formulario = () => {
                         type="text"
                         placeholder="Nombre de la Mascota"
                         className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
-                        value={paciente.nombre}
+                        value={nombre}
                         onChange={(e) => setPaciente({ ...paciente, nombre: e.target.value })}
                     />
                 </div>
@@ -49,7 +70,7 @@ const Formulario = () => {
                         type="text"
                         placeholder="Nombre del Propietario"
                         className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
-                        value={paciente.propietario}
+                        value={propietario}
                         onChange={(e) => setPaciente({ ...paciente, propietario: e.target.value })}
                     />
                 </div>
@@ -62,7 +83,7 @@ const Formulario = () => {
                         type="email"
                         placeholder="Email"
                         className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
-                        value={paciente.email}
+                        value={email}
                         onChange={(e) => setPaciente({ ...paciente, email: e.target.value })}
                     />
                 </div>
@@ -75,7 +96,7 @@ const Formulario = () => {
                         id="alta"
                         type="date"
                         className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
-                        value={paciente.fecha}
+                        value={fecha}
                         onChange={(e) => setPaciente({ ...paciente, fecha: e.target.value })}
                     />
                 </div>
@@ -87,14 +108,14 @@ const Formulario = () => {
                         id="sintomas"
                         className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
                         placeholder="Describe los Síntomas"
-                        value={paciente.sintomas}
+                        value={sintomas}
                         onChange={(e) => setPaciente({ ...paciente, sintomas: e.target.value })}
                     />
                 </div>
                 <input
                     type="submit"
                     className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors "
-                    value={paciente.id ? "Editar Paciente" : "Agregar Paciente"}
+                    value={id ? "Editar Paciente" : "Agregar Paciente"}
                 />
             </form>
         </div>

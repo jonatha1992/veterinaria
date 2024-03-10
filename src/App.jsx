@@ -1,15 +1,19 @@
 import ListadoPacientes from "./components/ListadoPacientes";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
-function App() {
-    const [pacientes, setPacientes] = useState([]);
+import { PacientesProvider } from "./context/Context";
 
+function App() {
     return (
-        <div className="container mx-auto  min-h-screen overflow-hidden ">
-            <Header />
-            <Formulario setPacientes={setPacientes} />
-            <ListadoPacientes pacientes={pacientes} />
-        </div>
+        <PacientesProvider>
+            <div className="container mx-auto  min-h-screen overflow-hidden ">
+                <Header />
+                <div className="md:flex mt-4">
+                    <Formulario />
+                    <ListadoPacientes />
+                </div>
+            </div>
+        </PacientesProvider>
     );
 }
 
