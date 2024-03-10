@@ -19,8 +19,16 @@ const Formulario = () => {
             setError(true);
             return;
         }
-        paciente.id = generarId();
-        setPacientes([...pacientes, paciente]);
+        if (paciente.id) {
+            const pacientesActualizados = pacientes.map((pacienteState) =>
+                pacienteState.id === paciente.id ? paciente : pacienteState
+            );
+            setPacientes(pacientesActualizados);
+        } else {
+            paciente.id = generarId();
+            setPacientes([...pacientes, paciente]);
+        }
+
         setPaciente({
             id: "",
             nombre: "",

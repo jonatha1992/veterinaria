@@ -1,5 +1,4 @@
-import { Children } from "react";
-import { useContext, useState, createContext } from "react";
+import { useContext, useState, createContext, useEffect } from "react";
 
 const PacientesContext = createContext();
 
@@ -13,6 +12,18 @@ export const PacientesProvider = ({ children }) => {
         fecha: "",
         sintomas: "",
     });
+
+    useEffect(() => {
+        const obtenerLS = () => {
+            const pacientesLS = JSON.parse(localStorage.getItem("pacientes")) ?? [];
+            setPacientes(pacientesLS);
+        };
+        obtenerLS();
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("pacientes", JSON.stringify(pacientes));
+    }, [pacientes]);
 
     const eliminarPaciente = (id) => {
         const pacientesActualizados = pacientes.filter((paciente) => paciente.id !== id);
