@@ -5,11 +5,13 @@ import ListadoPacientes from "./components/ListadoPacientes";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
 function App() {
+    const [pacientes, setPacientes] = useState([]);
+
     return (
         <>
             <Header />
-            <Formulario />
-            <ListadoPacientes />
+            <Formulario setPacientes={setPacientes} />
+            <ListadoPacientes pacientes={pacientes} />
         </>
     );
 }
