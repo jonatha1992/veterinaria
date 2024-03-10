@@ -9,7 +9,7 @@ function App() {
             <Header />
             <Formulario setPacientes={setPacientes} />
             <ListadoPacientes pacientes={pacientes} />
-        </>
+        </div>
     );
 }
 
