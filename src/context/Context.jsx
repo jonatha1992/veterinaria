@@ -36,5 +36,4 @@ export const PacientesProvider = ({ children }) => {
         </PacientesContext.Provider>
     );
 };
-
 export const usePacientes = () => useContext(PacientesContext);

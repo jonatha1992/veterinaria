@@ -6,15 +6,13 @@ import { useEffect } from "react";
 
 function App() {
     return (
-        <PacientesProvider>
-            <div className="container mx-auto  min-h-screen overflow-hidden ">
-                <Header />
-                <div className="md:flex mt-4">
-                    <Formulario />
-                    <ListadoPacientes />
-                </div>
+        <div className="container mx-auto  min-h-screen overflow-hidden ">
+            <Header />
+            <div className="md:flex mt-4">
+                <Formulario />
+                <ListadoPacientes />
             </div>
-        </PacientesProvider>
+        </div>
     );
 }
 
