@@ -1,8 +1,6 @@
 import ListadoPacientes from "./components/ListadoPacientes";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
-import { PacientesProvider, usePacientes } from "./context/Context";
-import { useEffect } from "react";
 
 function App() {
     return (

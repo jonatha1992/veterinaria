@@ -12,6 +12,7 @@ const Formulario = () => {
     const [error, setError] = useState(false);
     const { pacientes, setPacientes, paciente, setPaciente } = usePacientes();
     const { id, nombre, propietario, email, fecha, sintomas } = paciente;
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -83,21 +84,33 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="mb-2">
+                    {/* <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                        className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
+                        value={email}
+                        onChange={(e) => setPaciente({ ...paciente, email: e.target.value })}
+                    /> */}
+
                     <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
                         Email
                     </label>
                     <input
-                        id="mail"
+                        id="email"
                         type="email"
                         placeholder="Email"
-                        className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
+                        className="border-gray-500 border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
                         value={email}
                         onChange={(e) => setPaciente({ ...paciente, email: e.target.value })}
                     />
                 </div>
 
                 <div className="mb-2">
-                    <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
+                    <label htmlFor="alta" className="block text-gray-700 uppercase font-bold text-sm">
                         Alta
                     </label>
                     <input
@@ -109,7 +122,7 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="mb-2">
-                    <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
+                    <label htmlFor="sintomas" className="block text-gray-700 uppercase font-bold text-sm">
                         Síntomas
                     </label>
                     <textarea
