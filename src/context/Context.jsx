@@ -4,9 +4,15 @@ const PacientesContext = createContext();
 
 export const PacientesProvider = ({ children }) => {
     const [pacientes, setPacientes] = useState(() => {
-        const pacientesLS = localStorage.getItem("pacientes");
-        console.log("Inicializando pacientes con datos de localStorage:", pacientesLS);
-        return pacientesLS ? JSON.parse(pacientesLS) : [];
+        try {
+            const pacientesLS = localStorage.getItem("pacientes");
+            if (!pacientesLS) return [];
+            const parsed = JSON.parse(pacientesLS);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+            console.error("Error al cargar pacientes de localStorage:", err);
+            return [];
+        }
     });
 
     const [paciente, setPaciente] = useState({
@@ -18,10 +24,13 @@ export const PacientesProvider = ({ children }) => {
         sintomas: "",
     });
 
-    // Este useEffect ahora sólo maneja la actualización del localStorage cuando 'pacientes' cambia
+    // Actualizar localStorage cuando 'pacientes' cambia
     useEffect(() => {
-        console.log("Actualizando localStorage con nuevos datos de pacientes:", pacientes);
-        localStorage.setItem("pacientes", JSON.stringify(pacientes));
+        try {
+            localStorage.setItem("pacientes", JSON.stringify(pacientes));
+        } catch (err) {
+            console.error("Error al persistir pacientes en localStorage:", err);
+        }
     }, [pacientes]);
 
     const eliminarPaciente = (id) => {

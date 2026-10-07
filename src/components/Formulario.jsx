@@ -3,9 +3,10 @@ import Error from "./Error";
 import { usePacientes } from "../context/Context";
 
 const generarId = () => {
-    const random = Math.random().toString(36).substr(2);
-    const fecha = Date.now().toString(36);
-    return random + fecha;
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+    }
+    return `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 9)}`;
 };
 
 const Formulario = () => {
@@ -16,18 +17,37 @@ const Formulario = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if ([paciente.nombre, paciente.propietario, paciente.email, paciente.sintomas].includes("")) {
+        const nombreLimpio = paciente.nombre?.trim() || "";
+        const propietarioLimpio = paciente.propietario?.trim() || "";
+        const emailLimpio = paciente.email?.trim() || "";
+        const fechaLimpia = paciente.fecha?.trim() || "";
+        const sintomasLimpios = paciente.sintomas?.trim() || "";
+
+        if ([nombreLimpio, propietarioLimpio, emailLimpio, fechaLimpia, sintomasLimpios].some((campo) => campo === "")) {
             setError(true);
             return;
         }
+
+        const pacienteGuardar = {
+            ...paciente,
+            nombre: nombreLimpio,
+            propietario: propietarioLimpio,
+            email: emailLimpio,
+            fecha: fechaLimpia,
+            sintomas: sintomasLimpios,
+        };
+
         if (paciente.id) {
             const pacientesActualizados = pacientes.map((pacienteState) =>
-                pacienteState.id === paciente.id ? paciente : pacienteState
+                pacienteState.id === paciente.id ? pacienteGuardar : pacienteState
             );
             setPacientes(pacientesActualizados);
         } else {
-            paciente.id = generarId();
-            setPacientes([...pacientes, paciente]);
+            const nuevoPaciente = {
+                ...pacienteGuardar,
+                id: generarId(),
+            };
+            setPacientes([...pacientes, nuevoPaciente]);
         }
 
         setPaciente({
@@ -84,18 +104,6 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="mb-2">
-                    {/* <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email"
-                        className="border-gray-500  border-2 w-full p-2 mt-1 placeholder-gray-400 rounded-md text-sm"
-                        value={email}
-                        onChange={(e) => setPaciente({ ...paciente, email: e.target.value })}
-                    /> */}
-
                     <label htmlFor="email" className="block text-gray-700 uppercase font-bold text-sm">
                         Email
                     </label>
